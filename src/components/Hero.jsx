@@ -19,12 +19,14 @@ const Hero = () => {
               <span>NFT</span> Bridge
             </Typography>
             <Typography variant="subtitle1" className={classes.text}>
+            <h1><strong>(Withdrawls from Matic to ETH are suspended at the moment)</strong></h1>
               Matic brings you a trustless two-way transaction channel between
               Matic and Ethereum by introducing the cross-chain bridge with
               Plasma and PoS security. With this users can transfer tokens
               across matic without incurring third-party risks and market
               liquidity limitations. The Plasma and PoS Bridge is available on
               both Mumbai as well as Mainnet.
+              
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
