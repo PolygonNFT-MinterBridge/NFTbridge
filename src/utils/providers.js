@@ -1,6 +1,7 @@
+const POSClient= require("@maticnetwork/maticjs")
 const Network = require("@maticnetwork/meta/network")
 const Web3 = require("web3")
-const MaticPOSClient = require('@maticnetwork/maticjs').MaticPOSClient
+
 const config = require("./config")
 const rootChainManager = require("./abi/rootChainManager")
 
@@ -116,19 +117,32 @@ export const rootChainPrimaryProvider = async (injected_provider, tokenAddr=null
     console.log(network_, version_, provider_, posRootChainManager_, posERC721Predicate_, posERC1155Predicate_)
 
     try {
-        const maticPOSClient = new MaticPOSClient({
+        const posClient = new POSClient();
+         await posClient.init({
             network: "testnet",
             version: "mumbai",
-            maticProvider: provider_,// injected_provider,
-            parentProvider: injected_provider,// provider_,
-            posRootChainManager: posRootChainManager_,
-            posERC721Predicate: posERC721Predicate_,
-            posERC1155Predicate: posERC1155Predicate_,
-            parentDefaultOptions: { from: account[0] },
-            maticDefaultOptions: { from: account[0] },
+            // maticProvider: provider_,// injected_provider,
+            // parentProvider: injected_provider,// provider_,
+            // posRootChainManager: posRootChainManager_,
+            // posERC721Predicate: posERC721Predicate_,
+            // posERC1155Predicate: posERC1155Predicate_,
+            // parentDefaultOptions: { from: account[0] },
+            // maticDefaultOptions: { from: account[0] },
+            parent: {
+                provider: injected_provider,
+                defaultConfig: {
+                     from: account[0] 
+                }
+              },
+              child: {
+                provider: provider_,
+                defaultConfig: {
+                    from: account[0]
+                }
+              }
 
         })
-        return maticPOSClient
+        return posClient
 
     } catch (e) {
         console.error(e)
@@ -170,19 +184,40 @@ export const childChainPrimaryProvider = async (injected_provider) => {
     console.log(injected_provider)
     console.log(network_, version_, provider_, posRootChainManager_, posERC721Predicate_, posERC1155Predicate_)
     // try {
-    const maticPOSClient = new MaticPOSClient({
-        network: network_,
-        version: version_,
-        maticProvider: injected_provider,
-        parentProvider: provider_,
-        posRootChainManager: posRootChainManager_,
-        posERC721Predicate: posERC721Predicate_,
-        posERC1155Predicate: posERC1155Predicate_,
-        parentDefaultOptions: { from: account[0] },
-        maticDefaultOptions: { from: account[0] },
+        const posClient = new POSClient();
+        const POSclient = await posClient.init({
+            network: network_,
+            version: version_,
+            parent: {
+                provider: provider_,
+                defaultConfig: {
+                     from: account[0] 
+                }
+              },
+              child: {
+                provider: injected_provider,
+                defaultConfig: {
+                    from: account[0]
+                }
+              }
 
-    })
-    return maticPOSClient
+        })
+        return POSclient
+
+
+    // const POSClient = new POSClient({
+    //     network: network_,
+    //     version: version_,
+    //     maticProvider: injected_provider,
+    //     parentProvider: provider_,
+    //     posRootChainManager: posRootChainManager_,
+    //     posERC721Predicate: posERC721Predicate_,
+    //     posERC1155Predicate: posERC1155Predicate_,
+    //     parentDefaultOptions: { from: account[0] },
+    //     maticDefaultOptions: { from: account[0] },
+
+    // })
+    // return POSClient
 
     // } catch (e) {
     //     console.error("Unable to create maticPOSClient", e)

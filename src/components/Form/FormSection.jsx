@@ -22,7 +22,9 @@ const FormSection = ({ db }) => {
   const handleTabs = (event, newValue) => {
     setValue(newValue);
   };
-
+  function disable() {
+    alert("Matic to ETH withdrawal has temporarily been disabled. The withdrawal will be enabled once the upgrade is completed.")
+}
   const switchForm = () => {
     if (form) {
       setForm(false);
@@ -83,7 +85,7 @@ const FormSection = ({ db }) => {
                     <div
                       className={`${classes.switchIcon} ${form ? "" : "rotate"
                         }`}
-                      onClick={switchForm}
+                      onClick={disable}
                     >
                       <SwapHoriz style={{ fontSize: "28px" }} />
                     </div>

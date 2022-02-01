@@ -46,10 +46,11 @@ const ExitModal = ({ triggerModal, setTriggerModal, data, db }) => {
         if (data.nft721) {
           isProcessed = await maticPOSClient.isBatchERC721ExitProcessed(data.txn);
         } else {
+          console.log("test3")
           isProcessed = await maticPOSClient.isBatchERC1155ExitProcessed(data.txn);
           let tx;
           tx = await exitERC1155(maticPOSClient, data.txn);
-          console.log(tx);
+          console.log(tx,"test1");
           // Update on Firebase 
           const snapshot = await db.collection('storeHash').doc(account);
           const d = await snapshot.get();
@@ -72,7 +73,7 @@ const ExitModal = ({ triggerModal, setTriggerModal, data, db }) => {
           } else {
             tx = await exitERC1155(maticPOSClient, data.txn);
           }
-          console.log(tx);
+          console.log(tx,"test2");
 
           // Update on Firebase 
           const snapshot = await db.collection('storeHash').doc(account);
@@ -92,9 +93,9 @@ const ExitModal = ({ triggerModal, setTriggerModal, data, db }) => {
           e.message === "Burn transaction has not been checkpointed as yet"
         ) {
           console.log("not yet checkpointed");
-          setError(e.message);
+          setError(`${e.message}yo`);
         } else {
-          setError("Make sure you are on ETH or Goerli Network");
+          setError(`${e.message}hello`);
         }
       }
       setLoading(false);
